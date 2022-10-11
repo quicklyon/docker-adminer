@@ -17,11 +17,13 @@ RUN	addgroup -S adminer \
 WORKDIR /var/www/html
 
 RUN	set -x \
-&&	apk add --no-cache --virtual .build-deps \
+	&&	apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
 	postgresql-dev \
 	sqlite-dev \
 	unixodbc-dev \
 	freetds-dev \
+&&	pecl install mongodb \
+&&	docker-php-ext-enable mongodb \
 &&	docker-php-ext-configure pdo_odbc --with-pdo-odbc=unixODBC,/usr \
 &&	docker-php-ext-install \
 	mysqli \
